@@ -1,47 +1,36 @@
 package com.sistema.admin.Aluno.dominio;
 
-import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
+@Document(collection = "alunos")
 @Getter
-@Entity
-@Table(name = "tb_aluno")
+@Setter
+@NoArgsConstructor
 public class Aluno {
 
-    // Getters e Setters
-    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Mongo usa ObjectId (String)
 
-    @Setter
-    @Column(nullable = false, length = 160)
     private String nome;
 
-    @Setter
-    @Column(nullable = false, unique = true, length = 14)
+    @Indexed(unique = true) // índice único para CPF
     private String cpf;
 
-    @Setter
-    @Column(nullable = false, unique = true, length = 160)
+    @Indexed(unique = true) // índice único para email
     private String email;
 
-    @Setter
-    @Column(length = 30)
     private String telefone;
 
-    @Setter
-    @Column(length = 255)
     private String endereco;
 
-    @Column(name = "criado_em", nullable = false, updatable = false)
-    private OffsetDateTime criadoEm = OffsetDateTime.now();
+    private Instant criadoEm = Instant.now();
 
-    @Setter
-    @Column(name = "atualizado_em")
-    private OffsetDateTime atualizadoEm;
-
+    private Instant atualizadoEm;
 }

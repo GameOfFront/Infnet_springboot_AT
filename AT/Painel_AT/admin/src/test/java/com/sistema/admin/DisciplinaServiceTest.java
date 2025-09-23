@@ -37,7 +37,7 @@ class DisciplinaServiceTest {
         when(disciplinaRepository.findByNome("Matemática")).thenReturn(Optional.empty());
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(1L);
+        disciplina.setId("1"); // agora String
         disciplina.setCodigo("MAT101");
         disciplina.setNome("Matemática");
 

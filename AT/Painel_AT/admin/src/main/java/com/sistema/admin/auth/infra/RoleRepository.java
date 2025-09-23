@@ -1,11 +1,10 @@
 package com.sistema.admin.auth.infra;
 
 import com.sistema.admin.auth.dominio.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-// Código que e responsável por manipular os dados de role do repository.
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends MongoRepository<Role, String> {
     Optional<Role> findByNome(String nome);
 }

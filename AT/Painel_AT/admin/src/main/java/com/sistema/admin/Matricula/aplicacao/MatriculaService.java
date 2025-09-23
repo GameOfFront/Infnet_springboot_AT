@@ -9,11 +9,10 @@ import com.sistema.admin.Matricula.dominio.Matricula;
 import com.sistema.admin.Matricula.infra.MatriculaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -31,7 +30,6 @@ public class MatriculaService {
         this.disciplinaRepository = disciplinaRepository;
     }
 
-    @Transactional
     public MatriculaDTO alocar(MatriculaDTO dto) {
         Aluno aluno = alunoRepository.findById(dto.alunoId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
@@ -47,6 +45,8 @@ public class MatriculaService {
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setNota(dto.nota());
+        matricula.setCriadoEm(Instant.now());
+        matricula.setAtualizadoEm(Instant.now());
 
         matricula = matriculaRepository.save(matricula);
 
@@ -58,13 +58,12 @@ public class MatriculaService {
         );
     }
 
-    @Transactional
-    public MatriculaDTO atribuirNota(Long matriculaId, Double nota) {
+    public MatriculaDTO atribuirNota(String matriculaId, Double nota) {
         Matricula matricula = matriculaRepository.findById(matriculaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Matrícula não encontrada"));
 
         matricula.setNota(BigDecimal.valueOf(nota));
-        matricula.setAtualizadoEm(OffsetDateTime.now());
+        matricula.setAtualizadoEm(Instant.now());
 
         matricula = matriculaRepository.save(matricula);
 
@@ -76,8 +75,7 @@ public class MatriculaService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public List<MatriculaDTO> listarAprovados(Long disciplinaId) {
+    public List<MatriculaDTO> listarAprovados(String disciplinaId) {
         return matriculaRepository.findAprovados(disciplinaId, BigDecimal.valueOf(7.0))
                 .stream()
                 .map(m -> new MatriculaDTO(
@@ -89,8 +87,7 @@ public class MatriculaService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<MatriculaDTO> listarReprovados(Long disciplinaId) {
+    public List<MatriculaDTO> listarReprovados(String disciplinaId) {
         return matriculaRepository.findReprovados(disciplinaId, BigDecimal.valueOf(7.0))
                 .stream()
                 .map(m -> new MatriculaDTO(

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record DisciplinaDTO(
-        Long id,
+        String id, // era Long → agora String
 
         @NotBlank(message = "Código é obrigatório")
         @Size(max = 20, message = "Código deve ter no máximo 20 caracteres")

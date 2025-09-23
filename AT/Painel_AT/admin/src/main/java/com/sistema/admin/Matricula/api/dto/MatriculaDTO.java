@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record MatriculaDTO(
-        Long id,
+        String id,  // era Long → agora String
 
         @NotNull(message = "Aluno é obrigatório")
-        Long alunoId,
+        String alunoId,  // era Long → agora String
 
         @NotNull(message = "Disciplina é obrigatória")
-        Long disciplinaId,
+        String disciplinaId,  // era Long → agora String
 
         BigDecimal nota
 ) {}

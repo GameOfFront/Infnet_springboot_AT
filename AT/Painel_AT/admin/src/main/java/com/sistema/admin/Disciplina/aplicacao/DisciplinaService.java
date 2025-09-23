@@ -5,7 +5,6 @@ import com.sistema.admin.Disciplina.dominio.Disciplina;
 import com.sistema.admin.Disciplina.infra.DisciplinaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -20,7 +19,6 @@ public class DisciplinaService {
         this.disciplinaRepository = disciplinaRepository;
     }
 
-    @Transactional
     public DisciplinaDTO cadastrar(DisciplinaDTO dto) {
         // validações de unicidade
         Optional<Disciplina> existenteCodigo = disciplinaRepository.findByCodigo(dto.codigo());
@@ -41,18 +39,17 @@ public class DisciplinaService {
         disciplina = disciplinaRepository.save(disciplina);
 
         return new DisciplinaDTO(
-                disciplina.getId(),
+                disciplina.getId(),   // agora é String
                 disciplina.getCodigo(),
                 disciplina.getNome()
         );
     }
 
-    @Transactional(readOnly = true)
     public List<DisciplinaDTO> listarTodas() {
         return disciplinaRepository.findAll()
                 .stream()
                 .map(d -> new DisciplinaDTO(
-                        d.getId(),
+                        d.getId(),   // agora é String
                         d.getCodigo(),
                         d.getNome()
                 ))

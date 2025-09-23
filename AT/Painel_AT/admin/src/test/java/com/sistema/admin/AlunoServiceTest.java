@@ -1,5 +1,6 @@
 package com.sistema.admin;
 
+import com.sistema.admin.Aluno.api.dto.AlunoCreateDTO;
 import com.sistema.admin.Aluno.api.dto.AlunoDTO;
 import com.sistema.admin.Aluno.aplicacao.AlunoService;
 import com.sistema.admin.Aluno.dominio.Aluno;
@@ -31,13 +32,13 @@ class AlunoServiceTest {
 
     @Test
     void deveCadastrarAlunoComSucesso() {
-        AlunoDTO dto = new AlunoDTO(null, "João", "123", "joao@email.com", "1199999", "Rua A");
+        AlunoCreateDTO dto = new AlunoCreateDTO("João", "123", "joao@email.com", "1199999", "Rua A");
 
         when(alunoRepository.findByCpf("123")).thenReturn(Optional.empty());
         when(alunoRepository.findByEmail("joao@email.com")).thenReturn(Optional.empty());
 
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1"); // agora String
         aluno.setNome("João");
         aluno.setCpf("123");
         aluno.setEmail("joao@email.com");
@@ -54,7 +55,7 @@ class AlunoServiceTest {
 
     @Test
     void deveLancarErroQuandoCpfJaExistir() {
-        AlunoDTO dto = new AlunoDTO(null, "Maria", "123", "maria@email.com", "1198888", "Rua B");
+        AlunoCreateDTO dto = new AlunoCreateDTO("Maria", "123", "maria@email.com", "1198888", "Rua B");
         when(alunoRepository.findByCpf("123")).thenReturn(Optional.of(new Aluno()));
 
         assertThrows(ResponseStatusException.class, () -> alunoService.cadastrar(dto));
@@ -62,7 +63,7 @@ class AlunoServiceTest {
 
     @Test
     void deveLancarErroQuandoEmailJaExistir() {
-        AlunoDTO dto = new AlunoDTO(null, "Pedro", "456", "pedro@email.com", "1197777", "Rua C");
+        AlunoCreateDTO dto = new AlunoCreateDTO("Pedro", "456", "pedro@email.com", "1197777", "Rua C");
         when(alunoRepository.findByCpf("456")).thenReturn(Optional.empty());
         when(alunoRepository.findByEmail("pedro@email.com")).thenReturn(Optional.of(new Aluno()));
 

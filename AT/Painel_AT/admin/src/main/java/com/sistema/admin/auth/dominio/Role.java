@@ -1,24 +1,21 @@
 package com.sistema.admin.auth.dominio;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
-
-// Código que representa a tabela do banco de dados
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "tb_role")
+@Document(collection = "roles")
 public class Role {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    private String id; // Mongo usa ObjectId (String)
 
-    @Column(nullable = false, unique = true, length = 40)
-    private String nome; // ex.: "ADMIN", "USUARIO"
-
+    @Indexed(unique = true)
+    private String nome;
 }

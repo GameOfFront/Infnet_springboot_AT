@@ -1,42 +1,38 @@
 package com.sistema.admin.Disciplina.dominio;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
 
-@Entity
-@Table(name = "tb_disciplina")
 @Getter
 @Setter
 @NoArgsConstructor
+@Document(collection = "disciplinas")
 public class Disciplina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Mongo usa ObjectId → String
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Indexed(unique = true)
     private String codigo;
 
-    @Column(nullable = false, length = 120)
     private String nome;
 
-    @Column(name = "criado_em", nullable = false, updatable = false)
     private OffsetDateTime criadoEm;
 
-    @Column(name = "atualizado_em")
     private OffsetDateTime atualizadoEm;
 
-    @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         this.criadoEm = OffsetDateTime.now();
+        this.atualizadoEm = OffsetDateTime.now();
     }
 
-    @PreUpdate
-    protected void onUpdate() {
+    public void preUpdate() {
         this.atualizadoEm = OffsetDateTime.now();
     }
 }

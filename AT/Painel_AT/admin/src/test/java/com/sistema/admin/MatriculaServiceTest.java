@@ -45,50 +45,50 @@ class MatriculaServiceTest {
     @Test
     void deveAlocarAlunoEmDisciplina() {
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1");
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(1L);
+        disciplina.setId("1");
 
-        when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(disciplinaRepository.findById(1L)).thenReturn(Optional.of(disciplina));
-        when(matriculaRepository.findByAlunoIdAndDisciplinaId(1L, 1L)).thenReturn(Optional.empty());
+        when(alunoRepository.findById("1")).thenReturn(Optional.of(aluno));
+        when(disciplinaRepository.findById("1")).thenReturn(Optional.of(disciplina));
+        when(matriculaRepository.findByAlunoIdAndDisciplinaId("1", "1")).thenReturn(Optional.empty());
 
         Matricula matricula = new Matricula();
-        matricula.setId(1L);
+        matricula.setId("1");
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setNota(BigDecimal.ZERO);
 
         when(matriculaRepository.save(any(Matricula.class))).thenReturn(matricula);
 
-        MatriculaDTO dto = new MatriculaDTO(null, 1L, 1L, BigDecimal.ZERO);
+        MatriculaDTO dto = new MatriculaDTO(null, "1", "1", BigDecimal.ZERO);
         MatriculaDTO salvo = matriculaService.alocar(dto);
 
         assertNotNull(salvo);
-        assertEquals(1L, salvo.alunoId());
-        assertEquals(1L, salvo.disciplinaId());
+        assertEquals("1", salvo.alunoId());
+        assertEquals("1", salvo.disciplinaId());
     }
 
     // 🔹 Teste de atribuição de nota
     @Test
     void deveAtribuirNota() {
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1");
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(1L);
+        disciplina.setId("1");
 
         Matricula matricula = new Matricula();
-        matricula.setId(1L);
+        matricula.setId("1");
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setNota(BigDecimal.ZERO);
 
-        when(matriculaRepository.findById(1L)).thenReturn(Optional.of(matricula));
+        when(matriculaRepository.findById("1")).thenReturn(Optional.of(matricula));
         when(matriculaRepository.save(any(Matricula.class))).thenReturn(matricula);
 
-        MatriculaDTO atualizado = matriculaService.atribuirNota(1L, 8.5);
+        MatriculaDTO atualizado = matriculaService.atribuirNota("1", 8.5);
 
         assertEquals(BigDecimal.valueOf(8.5), atualizado.nota());
     }
@@ -97,56 +97,56 @@ class MatriculaServiceTest {
     @Test
     void deveListarAprovados() {
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1");
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(1L);
+        disciplina.setId("1");
 
         Matricula matricula = new Matricula();
-        matricula.setId(1L);
+        matricula.setId("1");
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setNota(BigDecimal.valueOf(9));
 
-        when(matriculaRepository.findAprovados(1L, BigDecimal.valueOf(7.0)))
+        when(matriculaRepository.findAprovados("1", BigDecimal.valueOf(7.0)))
                 .thenReturn(List.of(matricula));
 
-        List<MatriculaDTO> aprovados = matriculaService.listarAprovados(1L);
+        List<MatriculaDTO> aprovados = matriculaService.listarAprovados("1");
 
         assertFalse(aprovados.isEmpty());
-        assertEquals(1L, aprovados.get(0).alunoId());
+        assertEquals("1", aprovados.get(0).alunoId());
     }
 
     // 🔹 Teste listar reprovados
     @Test
     void deveListarReprovados() {
         Aluno aluno = new Aluno();
-        aluno.setId(2L);
+        aluno.setId("2");
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(2L);
+        disciplina.setId("2");
 
         Matricula matricula = new Matricula();
-        matricula.setId(2L);
+        matricula.setId("2");
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setNota(BigDecimal.valueOf(5));
 
-        when(matriculaRepository.findReprovados(2L, BigDecimal.valueOf(7.0)))
+        when(matriculaRepository.findReprovados("2", BigDecimal.valueOf(7.0)))
                 .thenReturn(List.of(matricula));
 
-        List<MatriculaDTO> reprovados = matriculaService.listarReprovados(2L);
+        List<MatriculaDTO> reprovados = matriculaService.listarReprovados("2");
 
         assertFalse(reprovados.isEmpty());
-        assertEquals(2L, reprovados.get(0).alunoId());
+        assertEquals("2", reprovados.get(0).alunoId());
     }
 
     // 🔹 Teste de exceção ao não encontrar aluno
     @Test
     void deveLancarExcecaoQuandoAlunoNaoEncontrado() {
-        when(alunoRepository.findById(99L)).thenReturn(Optional.empty());
+        when(alunoRepository.findById("99")).thenReturn(Optional.empty());
 
-        MatriculaDTO dto = new MatriculaDTO(null, 99L, 1L, BigDecimal.ZERO);
+        MatriculaDTO dto = new MatriculaDTO(null, "99", "1", BigDecimal.ZERO);
 
         assertThrows(ResponseStatusException.class, () -> matriculaService.alocar(dto));
     }
@@ -155,12 +155,12 @@ class MatriculaServiceTest {
     @Test
     void deveLancarExcecaoQuandoDisciplinaNaoEncontrada() {
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1");
 
-        when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(disciplinaRepository.findById(99L)).thenReturn(Optional.empty());
+        when(alunoRepository.findById("1")).thenReturn(Optional.of(aluno));
+        when(disciplinaRepository.findById("99")).thenReturn(Optional.empty());
 
-        MatriculaDTO dto = new MatriculaDTO(null, 1L, 99L, BigDecimal.ZERO);
+        MatriculaDTO dto = new MatriculaDTO(null, "1", "99", BigDecimal.ZERO);
 
         assertThrows(ResponseStatusException.class, () -> matriculaService.alocar(dto));
     }
@@ -169,17 +169,17 @@ class MatriculaServiceTest {
     @Test
     void deveLancarExcecaoQuandoMatriculaDuplicada() {
         Aluno aluno = new Aluno();
-        aluno.setId(1L);
+        aluno.setId("1");
 
         Disciplina disciplina = new Disciplina();
-        disciplina.setId(1L);
+        disciplina.setId("1");
 
-        when(alunoRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(disciplinaRepository.findById(1L)).thenReturn(Optional.of(disciplina));
-        when(matriculaRepository.findByAlunoIdAndDisciplinaId(1L, 1L))
+        when(alunoRepository.findById("1")).thenReturn(Optional.of(aluno));
+        when(disciplinaRepository.findById("1")).thenReturn(Optional.of(disciplina));
+        when(matriculaRepository.findByAlunoIdAndDisciplinaId("1", "1"))
                 .thenReturn(Optional.of(new Matricula()));
 
-        MatriculaDTO dto = new MatriculaDTO(null, 1L, 1L, BigDecimal.ZERO);
+        MatriculaDTO dto = new MatriculaDTO(null, "1", "1", BigDecimal.ZERO);
 
         assertThrows(ResponseStatusException.class, () -> matriculaService.alocar(dto));
     }

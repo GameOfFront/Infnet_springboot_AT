@@ -2,58 +2,43 @@ package com.sistema.admin.Matricula.dominio;
 
 import com.sistema.admin.Aluno.dominio.Aluno;
 import com.sistema.admin.Disciplina.dominio.Disciplina;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
-@Entity
-@Table(
-        name = "tb_matricula",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_matricula_aluno_disciplina",
-                        columnNames = {"aluno_id", "disciplina_id"}
-                )
-        }
-)
 @Getter
 @Setter
 @NoArgsConstructor
+@Document(collection = "matriculas")
 public class Matricula {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "aluno_id", nullable = false)
+    @DBRef
     private Aluno aluno;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "disciplina_id", nullable = false)
+    @DBRef
     private Disciplina disciplina;
 
-    @Column(precision = 4, scale = 2)
     private BigDecimal nota;
 
-    @Column(name = "criado_em", nullable = false, updatable = false)
-    private OffsetDateTime criadoEm;
+    private Instant criadoEm = Instant.now();
 
-    @Column(name = "atualizado_em", nullable = false)
-    private OffsetDateTime atualizadoEm;
+    private Instant atualizadoEm = Instant.now();
 
-    @PrePersist
     public void prePersist() {
-        this.criadoEm = OffsetDateTime.now();
-        this.atualizadoEm = OffsetDateTime.now();
+        this.criadoEm = Instant.now();
+        this.atualizadoEm = Instant.now();
     }
 
-    @PreUpdate
     public void preUpdate() {
-        this.atualizadoEm = OffsetDateTime.now();
+        this.atualizadoEm = Instant.now();
     }
 }

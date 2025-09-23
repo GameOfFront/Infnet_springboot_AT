@@ -1,5 +1,6 @@
 package com.sistema.admin.Aluno.api;
 
+import com.sistema.admin.Aluno.api.dto.AlunoCreateDTO;
 import com.sistema.admin.Aluno.api.dto.AlunoDTO;
 import com.sistema.admin.Aluno.aplicacao.AlunoService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<AlunoDTO> cadastrar(@Valid @RequestBody AlunoDTO dto) {
+    public ResponseEntity<AlunoDTO> cadastrar(@Valid @RequestBody AlunoCreateDTO dto) {
         AlunoDTO salvo = alunoService.cadastrar(dto);
         return ResponseEntity.status(201).body(salvo);
     }

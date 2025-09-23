@@ -3,7 +3,7 @@ package com.sistema.admin.auth.api.dto;
 import java.util.Set;
 
 public record UsuarioResponse(
-        Long id,
+        String id, // era Long → agora String
         String nome,
         String email,
         Boolean ativo,

@@ -25,18 +25,18 @@ public class MatriculaController {
     }
 
     @PutMapping("/{id}/nota")
-    public ResponseEntity<MatriculaDTO> atribuirNota(@PathVariable Long id, @RequestParam Double nota) {
+    public ResponseEntity<MatriculaDTO> atribuirNota(@PathVariable String id, @RequestParam Double nota) {
         MatriculaDTO atualizado = matriculaService.atribuirNota(id, nota);
         return ResponseEntity.ok(atualizado);
     }
 
     @GetMapping("/aprovados/{disciplinaId}")
-    public ResponseEntity<List<MatriculaDTO>> listarAprovados(@PathVariable Long disciplinaId) {
+    public ResponseEntity<List<MatriculaDTO>> listarAprovados(@PathVariable String disciplinaId) {
         return ResponseEntity.ok(matriculaService.listarAprovados(disciplinaId));
     }
 
     @GetMapping("/reprovados/{disciplinaId}")
-    public ResponseEntity<List<MatriculaDTO>> listarReprovados(@PathVariable Long disciplinaId) {
+    public ResponseEntity<List<MatriculaDTO>> listarReprovados(@PathVariable String disciplinaId) {
         return ResponseEntity.ok(matriculaService.listarReprovados(disciplinaId));
     }
 }
