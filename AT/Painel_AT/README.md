@@ -6,7 +6,7 @@ Painel administrativo da fábrica de ladrilhos (projeto da faculdade). Esta vers
 - Java 21 • Spring Boot 3.5.4
 - Web, Data JPA, Validation, Security
 - Flyway (migrations)
-- H2 
+- Mongo DB
 - Springdoc OpenAPI (Swagger UI)
 
 ### ✅ Requisitos
